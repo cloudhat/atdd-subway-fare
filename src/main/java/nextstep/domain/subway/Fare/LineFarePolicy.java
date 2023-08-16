@@ -13,7 +13,9 @@ public class LineFarePolicy extends FarePolicy{
 
     @Override
     public int calculateFare(int fare) {
-        int surcharge = lines.stream().map(Line::getSurCharge).mapToInt(s -> s).max().orElse(0);
+        int surcharge = lines.stream()
+                .map(Line::getSurCharge)
+                .mapToInt(s -> s).max().orElse(0);
 
         return fare + surcharge;
     }

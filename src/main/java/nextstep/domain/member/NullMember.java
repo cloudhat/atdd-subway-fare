@@ -1,6 +1,8 @@
 package nextstep.domain.member;
 
 public class NullMember extends AbstractMember{
+
+    private final int NON_LOGIN_AGE = 30;
     @Override
     public boolean isNull() {
         return true;
@@ -8,6 +10,6 @@ public class NullMember extends AbstractMember{
 
     @Override
     public Integer getAge() {
-        return null;
+        return NON_LOGIN_AGE;
     }
 }

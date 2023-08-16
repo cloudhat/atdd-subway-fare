@@ -1,6 +1,5 @@
 package nextstep.domain.subway;
 
-import nextstep.domain.member.Member;
 import nextstep.util.FareCalculator;
 
 import java.util.List;

@@ -20,7 +20,7 @@ public enum DistanceFareType {
         for(DistanceFareType distanceFareType : values()){
             if(isInThresholdRange(distance, distanceFareType.thresholdDistance)){
                 Long addtionalFareDistance = distance - distanceFareType.thresholdDistance;
-                totalFare += distanceFareType.calculateOverFare(addtionalFareDistance, distanceFareType.incrementalDistance);
+                totalFare += calculateOverFare(addtionalFareDistance, distanceFareType.incrementalDistance);
 
                 distance = distanceFareType.thresholdDistance;
             }
@@ -30,10 +30,7 @@ public enum DistanceFareType {
     }
 
     public static boolean isInThresholdRange(Long distance,Long thresholdDistance){
-        if(distance>thresholdDistance){
-            return true;
-        }
-        return false;
+        return distance>thresholdDistance;
     }
 
     private static int calculateOverFare(Long distance, Long incrementalDistance) {

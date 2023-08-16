@@ -2,6 +2,7 @@ package nextstep.domain.subway.Fare;
 
 public class DistanceFarePolicy extends FarePolicy{
 
+    private static final int BASE_FARE = 1250;
     private Long distance;
 
     public DistanceFarePolicy(Long distance) {
@@ -11,6 +12,6 @@ public class DistanceFarePolicy extends FarePolicy{
     @Override
     public int calculateFare(int fare) {
 
-        return fare + DistanceFareType.getFareByDistance(this.distance);
+        return BASE_FARE + fare + DistanceFareType.getFareByDistance(this.distance);
     }
 }

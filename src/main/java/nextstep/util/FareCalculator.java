@@ -9,9 +9,8 @@ import nextstep.domain.subway.Line;
 import java.util.List;
 
 public class FareCalculator {
-    private static final int BASE_FARE = 1250;
     public static int totalFare(Long distance , List<Line> lines,int age){
-        int totalFare = BASE_FARE;
+        int totalFare = 0;
 
         FarePolicy farePolicy = new DistanceFarePolicy(distance)
                 .setNextFarePolicy(new LineFarePolicy(lines))

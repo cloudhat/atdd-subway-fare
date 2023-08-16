@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 public class PathService {
-    private final int NON_LOGIN_AGE = 30;
+
     private StationService stationService;
     private LineRepository lineRepository;
 
@@ -37,9 +37,7 @@ public class PathService {
         PathFinder pathFinder = new PathFinder(lineList , type);
         Path path = pathFinder.findPath(sourceStation, targetStation);
 
-        int age = !member.isNull() ? member.getAge() : NON_LOGIN_AGE;
-
-        return PathResponse.createPathResponse(path,age);
+        return PathResponse.createPathResponse(path,member.getAge());
 
     }
 
