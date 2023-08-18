@@ -2,9 +2,7 @@ package nextstep.auth.principal;
 
 import nextstep.auth.AuthenticationException;
 import nextstep.auth.token.JwtTokenProvider;
-import nextstep.domain.member.Member;
 import nextstep.domain.member.MemberRepository;
-import nextstep.domain.member.NullMember;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -28,9 +26,10 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        AuthenticationPrincipal authenticationPrincipal = parameter.getParameterAnnotation(AuthenticationPrincipal.class);
         String authorization = webRequest.getHeader("Authorization");
-        if (!StringUtils.hasText(authorization)) {
-            return new NullMember();
+        if (!StringUtils.hasText(authorization) && !authenticationPrincipal.required()) {
+            return new AnonymousPrincipal();
         }
         if (!"bearer".equalsIgnoreCase(authorization.split(" ")[0])) {
             throw new AuthenticationException();
@@ -39,11 +38,9 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
 
         try {
             String username = jwtTokenProvider.getPrincipal(token);
+            String role = jwtTokenProvider.getRoles(token);
 
-            Member member = memberRepository.findByEmail(username)
-                    .orElseThrow(RuntimeException::new);
-
-            return member;
+            return new UserPrincipal(username, role);
         }
         catch (Exception e) {
             throw new AuthenticationException();

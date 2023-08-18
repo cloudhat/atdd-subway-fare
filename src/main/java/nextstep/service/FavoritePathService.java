@@ -1,6 +1,7 @@
 package nextstep.service;
 
 import nextstep.auth.AuthenticationException;
+import nextstep.auth.principal.UserPrincipal;
 import nextstep.domain.subway.FavoritePath;
 import nextstep.domain.subway.Station;
 import nextstep.domain.member.Member;
@@ -33,10 +34,11 @@ public class FavoritePathService {
     }
 
     @Transactional
-    public FavoritePath createFavoritePath(FavoritePathRequest favoritePathRequest,Member member){
+    public FavoritePath createFavoritePath(FavoritePathRequest favoritePathRequest,UserPrincipal userPrincipal){
 
         Station sourceStation = stationService.findStation(favoritePathRequest.getSource());
         Station targetStation = stationService.findStation(favoritePathRequest.getTarget());
+        Member member = memberRepository.findByEmail(userPrincipal.getUsername()).orElseThrow(AuthenticationException::new);
 
         pathService.validatePath(sourceStation.getId(), targetStation.getId(), PathType.DISTANCE);
 
@@ -45,7 +47,8 @@ public class FavoritePathService {
         return favoritePath;
     }
 
-    public List<FavoritePathResponse> findAllFavoritePaths(Member member){
+    public List<FavoritePathResponse> findAllFavoritePaths(UserPrincipal userPrincipal){
+        Member member = memberRepository.findByEmail(userPrincipal.getUsername()).orElseThrow(AuthenticationException::new);
 
         List<FavoritePathResponse> favoritePathResponseList = favoritePathRepository.findByMember(member).stream()
                 .map(FavoritePathResponse::createFavoritePathResponse)
@@ -55,10 +58,10 @@ public class FavoritePathService {
     }
 
     @Transactional
-    public void deleteFavoritePath(Long favoritePathId,Member member){
+    public void deleteFavoritePath(Long favoritePathId, UserPrincipal userPrincipal){
         FavoritePath favoritePath = favoritePathRepository.findById(favoritePathId)
                 .orElseThrow(() -> new EntityNotFoundException("favoritePath not found"));
-
+        Member member = memberRepository.findByEmail(userPrincipal.getUsername()).orElseThrow(AuthenticationException::new);
 
         if(!Objects.equals(favoritePath.getMember().getId(), member.getId())){
             throw new AuthenticationException();

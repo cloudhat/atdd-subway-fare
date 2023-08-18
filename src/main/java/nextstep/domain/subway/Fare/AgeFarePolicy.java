@@ -1,9 +1,9 @@
 package nextstep.domain.subway.Fare;
 
 public class AgeFarePolicy extends FarePolicy{
-    private int age;
+    private Integer age;
 
-    public AgeFarePolicy(int age) {
+    public AgeFarePolicy(Integer age) {
         this.age = age;
     }
 

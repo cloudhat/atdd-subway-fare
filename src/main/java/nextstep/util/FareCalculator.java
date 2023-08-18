@@ -9,7 +9,7 @@ import nextstep.domain.subway.Line;
 import java.util.List;
 
 public class FareCalculator {
-    public static int totalFare(Long distance , List<Line> lines,int age){
+    public static int totalFare(Long distance , List<Line> lines,Integer age){
         int totalFare = 0;
 
         FarePolicy farePolicy = new DistanceFarePolicy(distance)

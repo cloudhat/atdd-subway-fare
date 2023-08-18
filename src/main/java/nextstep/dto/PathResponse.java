@@ -19,7 +19,7 @@ public class PathResponse {
     private Long duration;
     private int fare;
 
-    public static PathResponse createPathResponse(Path path,int age){
+    public static PathResponse createPathResponse(Path path,Integer age){
         PathResponse pathResponse = new PathResponse();
         pathResponse.stations = path.getStations();
         pathResponse.distance = path.getDistance();

@@ -111,9 +111,9 @@ public class FarePolicyTest {
 
     private static Stream<Arguments> provideDistanceAndFare() {
         return Stream.of(
-                Arguments.of(10L,0),
-                Arguments.of(16L,200),
-                Arguments.of(60L,800+200)
+                Arguments.of(10L,1250+0),
+                Arguments.of(16L,1250+200),
+                Arguments.of(60L,1250+800+200)
         );
     }
 
@@ -154,10 +154,13 @@ public class FarePolicyTest {
     void calculateFareOfEveryFarePolicy(){
 
         //when
+        int anonymousTotalFare = FareCalculator.totalFare(교대강남구간거리 + 강남양재구간거리 + 양재남부터미널구간거리, List.of(이호선, 삼호선, 신분당선), null);
         int adultTotalFare = FareCalculator.totalFare(교대강남구간거리 + 강남양재구간거리 + 양재남부터미널구간거리, List.of(이호선, 삼호선, 신분당선), 30);
         int childTotalFare = FareCalculator.totalFare(교대강남구간거리 + 강남양재구간거리 + 양재남부터미널구간거리, List.of(이호선, 삼호선, 신분당선), 10);
 
         //then
+        assertThat(anonymousTotalFare)
+                .isEqualTo(1250+400+900);
         assertThat(adultTotalFare)
                 .isEqualTo(1250+400+900);
         assertThat(childTotalFare)

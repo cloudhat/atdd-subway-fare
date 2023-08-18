@@ -28,7 +28,7 @@ public class Path {
         return this.duration;
     }
 
-    public int getFare(int age) {
+    public int getFare(Integer age) {
         return FareCalculator.totalFare(this.distance, sections.getLines(), age);
     }
 

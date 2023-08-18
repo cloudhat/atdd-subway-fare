@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Member extends AbstractMember{
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -61,8 +61,10 @@ public class Member extends AbstractMember{
         return Objects.equals(this.password, password);
     }
 
-    @Override
-    public boolean isNull() {
-        return false;
-    }
+    public static Member NULL = new Member(){
+        @Override
+        public Integer getAge() {
+            return null;
+        }
+    };
 }

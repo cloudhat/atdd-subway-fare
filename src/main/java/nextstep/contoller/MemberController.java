@@ -1,6 +1,8 @@
 package nextstep.contoller;
 
+import nextstep.auth.AuthenticationException;
 import nextstep.auth.principal.AuthenticationPrincipal;
+import nextstep.auth.principal.UserPrincipal;
 import nextstep.domain.member.Member;
 import nextstep.dto.MemberRequest;
 import nextstep.dto.MemberResponse;
@@ -43,8 +45,8 @@ public class MemberController {
     }
 
     @GetMapping("/members/me")
-    public ResponseEntity<MemberResponse> findMemberOfMine(@AuthenticationPrincipal Member member) {
-        MemberResponse memberResponse = MemberResponse.of(member);
+    public ResponseEntity<MemberResponse> findMemberOfMine(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        MemberResponse memberResponse = memberService.findMemberByEmail(userPrincipal.getUsername());
         return ResponseEntity.ok().body(memberResponse);
     }
 }
